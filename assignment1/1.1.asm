@@ -53,17 +53,18 @@ main:
 
 		inner_loop:
 			addi $t1, $t1, 1  # j++
-			blt $s4, $zero, neg_cond  # if the i'th element of the vector2 is negative.
+			bltz $s4, neg_cond  # if the i'th element of the vector2 is negative.
 			add $s7, $s7, $s3  # add the value of the i'th element in vector1 to the result register
 			blt $t1, $s4, inner_loop  # if j < n. If inner_loop iterator (j) < n then again add the i'th element of vector1 ($s3) the result register $s7.
+			j next_ins
 			
 			neg_cond:
-				addi $t9, $t9, 1  # debug
+				add $t9, $t9, $s4  # debug
 				sub $t4, $zero, $s4  # $t4 contains the abs value of the $s4 (value of the i'th element in vector2)
 				sub $s7, $s7, $s3  # if i'th element of the vector2 is negative, then subtract the i'th element of the vector1 from the result.
 				blt $t1, $t4, inner_loop
 
-		addi $t0, $t0, 1  # i++
+		next_ins: addi $t0, $t0, 1  # i++
 		blt $t0, $s0, main_loop  # if i < n, then continue looping!
 	
 	li $v0, 10
