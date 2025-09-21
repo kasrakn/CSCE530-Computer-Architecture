@@ -13,9 +13,12 @@
 # $t8 = sign flag
 
 .data
-    n: .word 5 # Assuming 50 elements now
-	vector1: .word 1, 2, 3, 4, 5
-	vector2: .word 6, 7, 8, 9, 10
+	n: .word 50
+	vector1: .word 10, 20, 35, 50, 15, 8, 40, 25, 30, 70, 60, 10, 80, 25, 55, 45, 90, 20, 60, 75, 40, 85, 95, 15, 5, 30, 65, 70, 55, 85, 50, 35, 7, 20, 99, 42, 1, 62, 7, 18, 22, 9, 5, 32, 58, 48, 77, 68, 11, 29
+	vector2: .word -5, -8, -25, -45, -12, -60, -15, -33, -80, -5, -20, -1, -55, -30, -75, -52, -18, -9, -65, -44, -30, -82, -50, -4, -90, -10, -32, -72, -40, -88, -60, -15, -70, -28, -5, -99, -58, -38, -6, -16, -8, -2, -49, -71, -13, -88, -38, -9, -21, -3
+	print_message: .asciiz "The answer is: "
+    	newline:    .asciiz "\n"
+
 .text
 .globl main
 
@@ -85,8 +88,24 @@ add_to_sum:
     # Increment and loop
     addi $t0, $t0, 1
     blt $t0, $s0, main_loop
+	
 
 end_program:
+    # Print the message
+    li $v0, 4
+    la $a0, print_message
+    syscall
+
+    # Print the result
+    add $a0, $s7, $zero  # Load the value to print into $a0
+    li $v0, 1  # Set the syscall code for printing an integer
+    syscall 
+
+    # Print a newline
+    li $v0, 4
+    la $a0, newline
+    syscall
+    
     # Program finished, result is in $s7
     # For testing, you could print the value of $s7 here
     li $v0, 10
